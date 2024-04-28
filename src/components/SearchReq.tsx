@@ -63,14 +63,32 @@ export default function SearchReq() {
 						{request && (
 							<>
 								<div className="space-y-4 flex flex-col">
-									<p>Request ID: {request?.requestId}</p>
-									<p>Name: {request?.customerName}</p>
-									<p>Email: {request?.email}</p>
-									<p>Phone Number: {request?.phoneNumber}</p>
-									<p>Request Type: {request?.requestType}</p>
-									<p>Details: {request?.details}</p>
 									<p>
-										Attachement:
+										<span className="font-semibold">Request ID: </span>{' '}
+										{request?.requestId}
+									</p>
+									<p>
+										<span className="font-semibold">Name: </span>{' '}
+										{request?.customerName}
+									</p>
+									<p>
+										<span className="font-semibold">Email: </span>{' '}
+										{request?.email}
+									</p>
+									<p>
+										<span className="font-semibold">Phone Number: </span>{' '}
+										{request?.phoneNumber}
+									</p>
+									<p>
+										<span className="font-semibold">Request Type: </span>{' '}
+										{request?.requestType}
+									</p>
+									<p>
+										<span className="font-semibold">Details: </span>{' '}
+										{request?.details}
+									</p>
+									<p>
+										<span className="font-semibold">Attachement: </span>
 										{request?.attachment === '' ? (
 											'No attachment'
 										) : (
@@ -83,10 +101,16 @@ export default function SearchReq() {
 											/>
 										)}
 									</p>
-									<p>Status: {request?.status}</p>
-									<p>Raised on: {formatDate(request?.createdAt!)}</p>
 									<p>
-										Resolved on:{' '}
+										<span className="font-semibold">Status: </span>{' '}
+										{request?.status}
+									</p>
+									<p>
+										<span className="font-semibold">Raised on: </span>{' '}
+										{formatDate(request?.createdAt!)}
+									</p>
+									<p>
+										<span className="font-semibold">Resolved on: </span>{' '}
 										{request?.resolvedAt
 											? formatDate(request?.resolvedAt!)
 											: '-'}

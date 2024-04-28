@@ -30,10 +30,18 @@ export async function PUT(
 		const id = params.id;
 		const { status } = await request.json();
 		const req = await Request.findOne({ requestId: id });
-		req.status = status;
-		await req.save();
+		if (status === 'Resolved') {
+			req.status = status;
+			req.resolvedAt = Date.now();
+			await req.save();
 
-		return NextResponse.json(req, { status: 200 });
+			return NextResponse.json(req, { status: 200 });
+		} else {
+			req.status = status;
+			await req.save();
+
+			return NextResponse.json(req, { status: 200 });
+		}
 	} catch (error: any) {
 		return new NextResponse(error, {
 			status: 500,

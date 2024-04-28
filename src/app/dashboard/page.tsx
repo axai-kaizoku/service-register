@@ -88,7 +88,7 @@ export default function Dashboard() {
 												</TableCaption>
 											) : (
 												requests!.map((req, i) => (
-													<TableRow key={i}>
+													<TableRow key={req._id}>
 														<TableCell className="font-medium">
 															{req.requestId}
 														</TableCell>
