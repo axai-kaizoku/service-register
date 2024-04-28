@@ -27,20 +27,8 @@ export default function Login() {
 			setError('');
 		}
 
-		const response = await fetch('/api/update-login', {
-			method: 'POST',
-			body: JSON.stringify({ email }),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-
-		if (response.status !== 200) {
-			throw new Error(`HTTP error! Status: ${response.status}`);
-		}
-
 		if (res?.ok) {
-			router.replace('/dashboard');
+			router.replace('/');
 		}
 		router.refresh();
 
