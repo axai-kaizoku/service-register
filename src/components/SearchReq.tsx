@@ -71,13 +71,17 @@ export default function SearchReq() {
 									<p>Details: {request?.details}</p>
 									<p>
 										Attachement:
-										<Image
-											src={request?.attachment as string}
-											alt="attachment"
-											width={300}
-											height={300}
-											className="object-contain "
-										/>
+										{request?.attachment === '' ? (
+											'No attachment'
+										) : (
+											<Image
+												src={request?.attachment as string}
+												alt="attachment"
+												width={300}
+												height={300}
+												className="object-contain "
+											/>
+										)}
 									</p>
 									<p>Status: {request?.status}</p>
 									<p>Raised on: {formatDate(request?.createdAt!)}</p>

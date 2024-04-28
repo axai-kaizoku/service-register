@@ -8,18 +8,48 @@ import {
 	TableHeader,
 	TableRow,
 } from '@/components/ui/table';
+import { RequestProp } from '@/types';
+import { formatDate } from '@/utils/format-date';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Dashboard() {
 	const router = useRouter();
+	const [requests, setRequests] = useState<RequestProp[]>();
+	const [loading, setLoading] = useState<boolean>(true);
 	const { data: session, status: sessionStatus } = useSession();
 	useEffect(() => {
 		if (sessionStatus === 'unauthenticated') {
 			router.replace('/login');
 		}
 	}, [sessionStatus, router]);
+
+	const fetchRequests = async () => {
+		setLoading(true);
+		const response = await fetch('/api/requests');
+		const data = await response.json();
+		setRequests(data);
+		setLoading(false);
+	};
+	const handleChange = async (id: string, status: string) => {
+		setLoading(true);
+		const response = await fetch(`/api/requests/${id}`, {
+			method: 'PUT',
+			body: JSON.stringify({ status }),
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
+		setLoading(false);
+
+		if (response.ok) {
+			fetchRequests();
+		}
+	};
+	useEffect(() => {
+		fetchRequests();
+	}, []);
 
 	return (
 		<>
@@ -40,39 +70,46 @@ export default function Dashboard() {
 									<Table>
 										<TableHeader>
 											<TableRow>
-												<TableHead>Name</TableHead>
-												<TableHead>Room No.</TableHead>
-												<TableHead>Check In</TableHead>
-												<TableHead>Check Out</TableHead>
+												<TableHead>RequestID</TableHead>
+												<TableHead>Customer Name</TableHead>
+												<TableHead>Email</TableHead>
+												<TableHead>Phone Number</TableHead>
+												<TableHead>Request Type</TableHead>
+												<TableHead>Created At</TableHead>
 												<TableHead>Status</TableHead>
 											</TableRow>
 										</TableHeader>
 										<TableBody>
-											{false ? (
+											{loading ? (
 												<TableCaption
 													aria-colspan={5}
 													className="w-full flex justify-center items-center ">
 													<div className="w-9 h-9 border-t-8 rounded-full border-8 border-t-slate-500 border-gray-300 animate-spin"></div>
 												</TableCaption>
 											) : (
-												Array(1, 2, 3, 4, 51, 2, 3, 4, 5).map((_, i) => (
+												requests!.map((req, i) => (
 													<TableRow key={i}>
 														<TableCell className="font-medium">
-															{/* {order.user.name} */}User
+															{req.requestId}
 														</TableCell>
+														<TableCell>{req.customerName}</TableCell>
+														<TableCell>{req.email}</TableCell>
+														<TableCell>{req.phoneNumber}</TableCell>
+														<TableCell>{req.requestType}</TableCell>
+														<TableCell>{formatDate(req.createdAt)}</TableCell>
 														<TableCell>
-															{/* {order.rooms
-															.map((room: RoomProps) => room.roomNumber)
-															.join(', ')} */}
-															101
+															<select
+																name="status"
+																id="status"
+																value={req.status}
+																onChange={(e) =>
+																	handleChange(req.requestId, e.target.value)
+																}>
+																<option value="Pending">Pending</option>
+																<option value="In Progress">In Progress</option>
+																<option value="Resolved">Resolved</option>
+															</select>
 														</TableCell>
-														<TableCell>
-															{/* {formatOrderDate(order.checkIn)} */}30th
-														</TableCell>
-														<TableCell>
-															{/* {formatOrderDate(order.checkOut)} */}29th
-														</TableCell>
-														<TableCell>Pending</TableCell>
 													</TableRow>
 												))
 											)}

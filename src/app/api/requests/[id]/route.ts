@@ -9,7 +9,6 @@ export async function GET(
 	await connect();
 	try {
 		const id = params.id;
-		console.log(id);
 		const req = await Request.findOne({ requestId: id });
 		if (!req) {
 			return Response.json('No Request found with this ID');
@@ -22,10 +21,19 @@ export async function GET(
 	}
 }
 
-export async function PUT() {
+export async function PUT(
+	request: any,
+	{ params }: { params: { id: string } },
+) {
 	await connect();
 	try {
-		return new NextResponse('Update request status', { status: 200 });
+		const id = params.id;
+		const { status } = await request.json();
+		const req = await Request.findOne({ requestId: id });
+		req.status = status;
+		await req.save();
+
+		return NextResponse.json(req, { status: 200 });
 	} catch (error: any) {
 		return new NextResponse(error, {
 			status: 500,

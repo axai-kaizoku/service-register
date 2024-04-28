@@ -1,13 +1,13 @@
 export interface RequestProp {
-	_id: String;
-	requestId: String;
-	customerName: String;
-	email: String;
-	phoneNumber: String;
-	requestType: String;
-	details: String;
-	attachment: String;
-	status: String;
+	_id: string;
+	requestId: string;
+	customerName: string;
+	email: string;
+	phoneNumber: string;
+	requestType: string;
+	details: string;
+	attachment: string;
+	status: string;
 	createdAt: Date;
 	resolvedAt: Date;
 }

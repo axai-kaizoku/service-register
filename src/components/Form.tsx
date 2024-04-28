@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/accordion';
 import validateEmail from '@/utils/email-validate';
 import validateMobile from '@/utils/phone-validate';
+import { RequestProp } from '@/types';
 
 export default function Form() {
 	const [error, setError] = useState<string>('');
@@ -20,6 +21,7 @@ export default function Form() {
 	const [requestType, setRequestType] = useState<string>('Gas Connection');
 	const [details, setDetails] = useState<string>();
 	const [file, setFile] = useState<string>();
+	const [requestID, setRequestID] = useState<RequestProp>();
 
 	const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -36,8 +38,11 @@ export default function Form() {
 			return;
 		}
 		if (!requestType) return;
-		if (!details) return;
-		if (!file) return;
+		if (!details) {
+			setError('Enter details');
+			return;
+		}
+		// if (!file) return;
 
 		try {
 			const res = await fetch('/api/requests', {
@@ -48,14 +53,20 @@ export default function Form() {
 					phoneNumber,
 					requestType,
 					details,
-					attachment: file,
+					attachment: file ? file : '',
 				}),
 			});
+
 			if (!res.ok) {
 				setError('Something went wrong');
 				throw new Error(await res.text());
 			}
+
 			setError('');
+			const data = await res.json();
+			// console.log(data);
+			setRequestID(data);
+			console.log(requestID);
 
 			setName('');
 			setEmail('');
@@ -199,6 +210,14 @@ export default function Form() {
 								</div>
 								<div>
 									<p className="p-2 sm:text-sm w-full text-red-500">{error}</p>
+								</div>
+								<div>
+									<p className="p-2 sm:text-sm w-full text-slate-900">
+										<span>Your Request ID: </span>
+										<span className="font-bold text-lg">
+											{requestID?.requestId}
+										</span>
+									</p>
 								</div>
 
 								<button

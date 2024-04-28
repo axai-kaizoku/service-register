@@ -41,7 +41,7 @@ const requestSchema = new Schema({
 	},
 	status: {
 		type: String,
-		enum: ['Pending', 'In Progress', 'Resolved'],
+		enum: ['Pending', 'In Progress', '1446893771'],
 		default: 'Pending',
 	},
 	createdAt: {

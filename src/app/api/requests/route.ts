@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
 
 		await newRequest.save();
 		// console.log(newRequest);
-		return new NextResponse(newRequest, { status: 201 });
+		return NextResponse.json(newRequest, { status: 201 });
 	} catch (error: any) {
 		return new NextResponse(error, {
 			status: 500,
