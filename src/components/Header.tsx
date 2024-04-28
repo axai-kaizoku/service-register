@@ -6,7 +6,7 @@ export default function Header() {
 	const { data: session }: any = useSession();
 	return (
 		<header>
-			<nav className="w-full py-6 shadow-lg bg-slate-100 flex flex-col md:flex-row items-center px-20 justify-between">
+			<nav className="w-full py-6 shadow-lg bg-slate-200 flex flex-col md:flex-row items-center px-20 justify-between">
 				<h1 className="font-bold text-2xl pb-6 md:pb-0 whitespace-nowrap">
 					<Link href="/">E-Service</Link>
 				</h1>

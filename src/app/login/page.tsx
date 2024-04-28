@@ -28,7 +28,7 @@ export default function Login() {
 		}
 
 		if (res?.ok) {
-			router.replace('/');
+			router.replace('/dashboard');
 		}
 		router.refresh();
 
